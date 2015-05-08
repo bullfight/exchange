@@ -1,3 +1,4 @@
+require 'virtus'
 require 'stripe'
 
 require "exchange/version"

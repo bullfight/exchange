@@ -1,10 +1,7 @@
 module Exchange
   class InvoiceItem
-    attr_reader :amount, :description
-
-    def initialize(params)
-      @amount = params[:amount]
-      @description = params[:description]
-    end
+    include Virtus.model
+    attribute :amount, Integer, default: 0
+    attribute :description, String, default: ""
   end
 end
