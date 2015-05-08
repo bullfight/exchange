@@ -1,16 +1,16 @@
 module StripeHelper
   def stripe_card_token(month = 10)
-    Stripe::Token.create(source: { number: "4242424242424242",
-                                   exp_month: month,
-                                   exp_year: 2018,
-                                   cvc: 314 }).id
+    Stripe::Token.create(card: { number: "4242424242424242",
+                                 exp_month: month,
+                                 exp_year: 2018,
+                                 cvc: 314 }).id
   end
 
   def stripe_card_token_failed
-    Stripe::Token.create(source: { number: "4000000000000002",
-                                   exp_month: 12,
-                                   exp_year: 2018,
-                                   cvc: 314 }).id
+    Stripe::Token.create(card: { number: "4000000000000002",
+                                 exp_month: 12,
+                                 exp_year: 2018,
+                                 cvc: 314 }).id
   end
 
   def stripe_customer_token
