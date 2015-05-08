@@ -36,6 +36,5 @@ describe Exchange::Invoice do
     it 'has a joined description' do
       expect(subject.description).to eq "GoSwim Packages: Package 1"
     end
-    end
   end
 end
