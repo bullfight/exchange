@@ -1,4 +1,5 @@
 module Exchange
+  class InvalidCustomer < StandardError; end
   class Cashier
     attr_accessor :customer_token, :card_token
 
@@ -23,6 +24,12 @@ module Exchange
                             description: description,
                             statement_descriptor: description[0, 22],
                             capture: true)
+    rescue Stripe::InvalidRequestError => error
+      if error.message =~ /No such customer/
+        raise InvalidCustomer.new "Customer Not Found"
+      else
+        raise error
+      end
     end
   end
 end

@@ -42,7 +42,14 @@ describe Exchange::Cashier do
     expect(response.customer).to eq subject.customer_token
   end
 
-  it 'fails to checkout due to bad customer token' do
+  it 'fails to checkout due to bad customer token', :vcr do
+    subject.customer_token = 'cus_bad_token'
+    subject.card_token = stripe_card_token
+
+    expect {
+      response = subject.checkout
+    }.to raise_error Exchange::InvalidCustomer, "Customer Not Found"
+  end
   end
 
 end
