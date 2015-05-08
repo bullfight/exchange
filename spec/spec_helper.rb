@@ -4,3 +4,8 @@ require 'vcr_setup'
 require 'exchange'
 
 Exchange.stripe_api_key = ENV.fetch('STRIPE_SECRET_KEY')
+require 'stripe_helper'
+
+RSpec.configure do |c|
+  c.include StripeHelper
+end
