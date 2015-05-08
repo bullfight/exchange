@@ -8,8 +8,8 @@ module Exchange
     def description
       list = ""
       if line_items.any?
-        list = line_items.map(&:description).join("], [")
-        list = ": [#{list}]"
+        list = line_items.map(&:description).join(", ")
+        list = ": #{list}"
       end
       @description + list
     end
