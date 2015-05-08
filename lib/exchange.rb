@@ -1,5 +1,6 @@
 require 'virtus'
 require 'stripe'
+require 'active_support/core_ext/module/delegation'
 
 require "exchange/version"
 
