@@ -50,6 +50,13 @@ describe Exchange::Cashier do
       response = subject.checkout
     }.to raise_error Exchange::InvalidCustomer, "Customer Not Found"
   end
-  end
 
+  it 'fails to checkout due to bad card token', :vcr do
+    subject.customer_token = stripe_customer_token
+    subject.card_token = stripe_card_token_failed
+
+    expect {
+      response = subject.checkout
+    }.to raise_error Exchange::InvalidCard, "Your card was declined."
+  end
 end

@@ -1,5 +1,6 @@
 module Exchange
   class InvalidCustomer < StandardError; end
+  class InvalidCard < StandardError; end
   class Cashier
     attr_accessor :customer_token, :card_token
 
@@ -30,6 +31,8 @@ module Exchange
       else
         raise error
       end
+    rescue Stripe::CardError => error
+      raise InvalidCard.new error.message
     end
   end
 end
