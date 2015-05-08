@@ -6,6 +6,8 @@ require "exchange/version"
 
 require 'exchange/invoice_item'
 require 'exchange/invoice'
+require 'exchange/cashier'
+
 module Exchange
 
   def self.stripe_api_key=(key)
