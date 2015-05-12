@@ -18,6 +18,9 @@ describe Exchange::Cashier do
     }.to change(subject.invoice.line_items, :count).by(1)
   end
 
+  it 'adds a plan' do
+  end
+
   it 'has an amount' do
     subject.add_item(999, "Starting Package")
     subject.add_item(9999, "Advanced Package")
