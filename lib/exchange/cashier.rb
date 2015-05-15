@@ -2,7 +2,10 @@ module Exchange
   class InvalidCustomer < StandardError; end
   class InvalidCard < StandardError; end
   class Cashier
-    attr_accessor :customer_token, :card_token
+    include Virtus.model
+    attribute :customer_token
+    attribute :card_token
+    attribute :receipt, Boolean, default: false
 
     def invoice
       @invoice ||= Invoice.new
@@ -15,16 +18,24 @@ module Exchange
       invoice.add_line_item(line_item)
     end
 
+    def send_receipt
+      @receipt = true
+    end
+
     def checkout
       customer = Stripe::Customer.retrieve(customer_token)
       source = customer.sources.create(source: card_token)
-      Stripe::Charge.create(amount: amount,
-                            currency: 'usd',
-                            customer: customer.id,
-                            source: source.id,
-                            description: description,
-                            statement_descriptor: description[0, 22],
-                            capture: true)
+      options = { amount: amount,
+                  currency: 'usd',
+                  customer: customer.id,
+                  source: source.id,
+                  description: description,
+                  statement_descriptor: description[0, 22],
+                  capture: true }
+
+      options[:receipt_email] = customer.email if receipt
+
+      Stripe::Charge.create(options)
     rescue Stripe::InvalidRequestError => error
       if error.message =~ /No such customer/
         raise InvalidCustomer.new "Customer Not Found"

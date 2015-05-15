@@ -18,6 +18,12 @@ describe Exchange::Cashier do
     }.to change(subject.invoice.line_items, :count).by(1)
   end
 
+  it 'sends a receipt' do
+    expect(subject.receipt).to be false
+    subject.send_receipt
+    expect(subject.receipt).to be true
+  end
+
   it 'adds a plan' do
   end
 
@@ -39,6 +45,7 @@ describe Exchange::Cashier do
 
     subject.add_item(999, "Starting Package")
     subject.add_item(9999, "Advanced Package")
+    subject.send_receipt
 
     response = subject.checkout
     expect(response.amount).to eq 10998
